@@ -18,16 +18,26 @@ class Todo {
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
   }
 
+    _generateDueDate(dueDate) {
+    if (!isNaN(dueDate)) {
+      this._todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })}`;
+    }
+  }
+
   getView() {
     this._todoElement = this._templateElement.content
       .querySelector(".todo")
       .cloneNode(true);
 
+    this._todoDate = this._todoElement.querySelector(".todo__date");
+
     const todoNameEl = this._todoElement.querySelector(".todo__name");
-    const todoDate = this._todoElement.querySelector(".todo__date");
 
     todoNameEl.textContent = this._data.name;
-    todoDate.textContent = new Date(this._data.date).toLocaleDateString();
 
     const deleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     deleteBtn.addEventListener("click", () => {
@@ -36,6 +46,8 @@ class Todo {
 
     this._generateCheckBoxEl();
     this._setEventListeners();
+    this._generateDueDate(new Date(this._data.date));
+
     
     return this._todoElement;
   }
