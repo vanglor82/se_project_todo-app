@@ -1,22 +1,26 @@
 class TodoCounter {
-  constructor( todos, counterSelector ) {
-    this._counterElement = document.querySelector(counterSelector);
-    this._completedCount = 0;
-    this._totalCount = 0;
+  constructor( todos, selector ) {
+    this._element = document.querySelector(selector);
+    this._completed = 0;
+    this._completed = todos.filter((todo) => todo.completed).length;
+    this._total = todos.length;
+    this._updateText();
   }
 
     updateCompleted = (increment) => {
-        this._completedCount += increment;
-        this._render();
+        this._completed += increment ? 1 : -1;
+        this._updateText();
     }
 
     updateTotal = (increment) => {
-        this._totalCount += increment;
-        this._render();
+        this._total += increment ? 1 : -1;
+        this._updateText();
     }
 
-    updateText() {
-        this._counterElement.textContent = `Showing ${this._completedCount} 
-        out of ${this._totalCount} completed`;
+    _updateText() {
+        this._element.textContent = `Showing ${this._completed} 
+        out of ${this._total} completed`;
     }
 }
+
+export default TodoCounter;
