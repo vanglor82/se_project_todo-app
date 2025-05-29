@@ -1,6 +1,10 @@
 class Todo {
   constructor(data, selector, handleCheck, handleDelete) {
     this._data = data;
+    this._date = new Date(data.date);
+    this._date.setMinutes(
+      this._date.getMinutes() + this._date.getTimezoneOffset()
+    );
     this._templateElement = document.querySelector(selector);
     this._handleCheck = handleCheck;
     this._handleDelete = handleDelete;
@@ -25,9 +29,9 @@ class Todo {
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
   }
 
-    _generateDueDate(dueDate) {
-    if (!isNaN(dueDate)) {
-      this._todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
+    _generateDueDate() {
+    if (!isNaN(this._date)) {
+      this._todoDate.textContent = `Due: ${this._date.toLocaleString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -61,5 +65,6 @@ class Todo {
     return this._todoElement;
   }
 }
+    
 
 export default Todo;

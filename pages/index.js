@@ -14,31 +14,28 @@ const generateTodo = (data) => {
   return todoElement;
 };
 
+const renderTodo = (item) => {
+  const todoElement = generateTodo(item);
+  section.addItem(todoElement);
+};
+
 const section = new Section({
   items: initialTodos,
-  renderer: (item) => {
-    const todoElement = generateTodo(item);
-    section.addItem(todoElement);
-  },
+  renderer: renderTodo,
   containerSelector: ".todos__list",
 });
 
-section.renderItems();
-
 const popupInstance = new PopupWithForm({
   popupSelector: "#add-todo-popup",
-  handleFormSubmit: (values) => {
-    renderTodo(values);
+  handleFormSubmit: (items) => {
+    renderTodo(items);
+    
+    // section.addItem(todoElement);
     newTodoValidator.resetValidation();
     popupInstance.close();
+    todoCounter.updateTotal(true);
   },
 });
-
-const renderTodo = (todoData) => {
-  const todoElement = generateTodo(todoData);
-  section.addItem(todoElement);
-  todoCounter.updateTotal(true);
-};
 
 const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
@@ -52,6 +49,8 @@ function handleDelete(completed) {
   }
     todoCounter.updateTotal(false);
 }
+
+section.renderItems();
 
 addTodoButton.addEventListener("click", () => {
   popupInstance.open();

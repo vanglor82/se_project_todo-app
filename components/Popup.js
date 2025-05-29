@@ -2,12 +2,13 @@ class Popup {
   constructor({ popupSelector }) {
     this._popupElement = document.querySelector(popupSelector);
     this._popupCloseBtn = this._popupElement.querySelector(".popup__close");
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
   _handleEscClose(evt) {
     if (evt.key === "Escape") {
-      document.querySelector(".popup_visible").classList.remove("popup_visible");
-    }
+      this.close();
+      }
   }
 
   open() {
