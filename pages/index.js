@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
@@ -16,6 +18,13 @@ const generateTodo = (data) => {
 
 const renderTodo = (item) => {
   const todoElement = generateTodo(item);
+  const todoData = {
+    id: uuidv4(),
+    name: item.name,
+    completed: item.completed,
+    date: item.date,
+  };
+  todoElement.todoData = todoData;
   section.addItem(todoElement);
 };
 
@@ -29,8 +38,6 @@ const popupInstance = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (items) => {
     renderTodo(items);
-    
-    // section.addItem(todoElement);
     newTodoValidator.resetValidation();
     popupInstance.close();
     todoCounter.updateTotal(true);
